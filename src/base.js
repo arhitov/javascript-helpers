@@ -11,14 +11,18 @@
  * @param {string} name
  * @param {Object|Array} data
  * @param {Element|Document} object объект события
+ * @param {boolean} global навесить ли событие ещё глобально
  */
-const callEvent = (name, data = null, object = document) => {
+const callEvent = (name, data = null, object = document, global = false) => {
     object.dispatchEvent(new CustomEvent(name, {detail: data}));
+    if (global && object !== document) {
+        document.dispatchEvent(new CustomEvent(name, {detail: data}));
+    }
 };
 
 /**
  * Подписка на событие
- * @param {string} type
+ * @param {string|string[]} type
  * @param {function} callback
  * @param {Element|Document|Window|string} object объект наблюдения
  * @param {Element|Document} parent элемент в котором производится поиск
@@ -29,14 +33,16 @@ const listenerEvent = (type, callback, object = document, parent = document) => 
             listenerEvent(type, callback, element);
         }, parent);
     } else {
-        object.addEventListener(type, event => {
-            const detail = event?.detail;
-            return callback(
-                'object' === typeof detail
-                    ? detail
-                    : null,
-                event
-            );
+        (Array.isArray(type) ? type : [type]).forEach(type => {
+            object.addEventListener(type, event => {
+                const detail = event?.detail;
+                return callback(
+                    'object' === typeof detail
+                        ? detail
+                        : null,
+                    event
+                );
+            });
         });
     }
 };
@@ -95,7 +101,7 @@ const parent = (node, selector) => {
 const parentOrFail = (node, selector) => {
     const element = parent(node, selector);
     if (null === element) {
-        throw Error('Error: DOM Element not found!')
+        throw Error('Error: DOM Element not found!');
     }
     return element;
 };
@@ -134,6 +140,9 @@ class ErrorData extends Error {
  */
 const fetchJsonHandler = async (promise) => {
     return await promise
+        .catch(error => {
+            throw new ErrorData(error, error.data ?? null);
+        })
         .then(async response => {
             try {
                 return {
@@ -164,10 +173,21 @@ const fetchJsonHandler = async (promise) => {
             } else {
                 throw new ErrorData(`${data.response.status} ${data.response.statusText} ${data.response.url}`, data);
             }
-        })
-        .catch(error => {
-            throw new ErrorData(error, error.data ?? null);
         });
+};
+
+const fetchJsonHeaders = (csrf = false, addContentType = false) => {
+    let headers = {
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+    };
+    if (csrf) {
+        headers['X-CSRF-Token'] = selectOrFail('meta[name="csrf-token"]', document.head).getAttribute('content');
+    }
+    if (addContentType) {
+        headers['Content-Type'] = 'application/json';
+    }
+    return headers;
 };
 
 /**

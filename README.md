@@ -1,4 +1,4 @@
-Basic assistant functions
+Basic assistant functions. Sugar.
 ==============
 
 ![use strict][ico-use-strict]
@@ -24,5 +24,4 @@ Welcome here! :metal:
 [ico-use-strict]: https://img.shields.io/badge/"use_strict"-712cf9.svg
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg
 [link-license]: LICENSE.md
-[link-example]: example
 [link-javascript-helpers-base]: https://github.com/arhitov/javascript-helpers/src/base.js
