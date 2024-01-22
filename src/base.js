@@ -219,3 +219,22 @@ const dd = function () {
         }
     })('Break!');
 }
+
+export {
+    callEvent,
+    listenerEvent,
+    readyEvent,
+    select,
+    selectOrFail,
+    parent,
+    parentOrFail,
+    selectAll,
+    selectAllForEach,
+    ErrorData,
+    fetchJsonHandler,
+    fetchJsonHeaders,
+    generateIdx,
+    sleep,
+    dump,
+    dd
+};

@@ -1,0 +1,17 @@
+{
+  "name": "@arhitov/js-sugar",
+  "version": "0.0.2",
+  "description": "These are JavaScript function helpers to make writing code easier.",
+  "private": false,
+  "main": "src/base.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arhitov/javascript-helpers.git"
+  },
+  "author": "Arhitov Alexander <clgsru@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/arhitov/javascript-helpers",
+  "bugs": {
+    "url": "https://github.com/arhitov/javascript-helpers/issues"
+  }
+}
