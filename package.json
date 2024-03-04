@@ -1,6 +1,6 @@
 {
   "name": "@arhitov/js-sugar",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "These are JavaScript function helpers to make writing code easier.",
   "private": false,
   "main": "src/base.js",
