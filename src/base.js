@@ -220,7 +220,33 @@ const dd = function () {
     })('Break!');
 }
 
+const exportMethods = {
+    'callEvent': callEvent,
+    'listenerEvent': listenerEvent,
+    'readyEvent': readyEvent,
+    'select': select,
+    'selectOrFail': selectOrFail,
+    'parent': parent,
+    'parentOrFail': parentOrFail,
+    'selectAll': selectAll,
+    'selectAllForEach': selectAllForEach,
+    'ErrorData': ErrorData,
+    'fetchJsonHandler': fetchJsonHandler,
+    'fetchJsonHeaders': fetchJsonHeaders,
+    'generateIdx': generateIdx,
+    'sleep': sleep,
+    'dump': dump,
+    'dd': dd
+}
+
+const registrationAsGlobal = function () {
+    for (const [key, value] of Object.entries(exportMethods)) {
+        window[key] = value;
+    }
+}
+
 export {
+    registrationAsGlobal,
     callEvent,
     listenerEvent,
     readyEvent,
