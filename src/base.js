@@ -14,9 +14,9 @@
  * @param {boolean} global навесить ли событие ещё глобально
  */
 const callEvent = (name, data = null, object = document, global = false) => {
-    object.dispatchEvent(new CustomEvent(name, {detail: data}));
+    object.dispatchEvent(new CustomEvent(name, {detail: {data: data, target: object}}));
     if (global && object !== document) {
-        document.dispatchEvent(new CustomEvent(name, {detail: data}));
+        document.dispatchEvent(new CustomEvent(name, {detail: {data: data, target: object}}));
     }
 };
 
@@ -35,12 +35,14 @@ const listenerEvent = (type, callback, object = document, parent = document) => 
     } else {
         (Array.isArray(type) ? type : [type]).forEach(type => {
             object.addEventListener(type, event => {
-                const detail = event?.detail;
+                const data = event?.detail?.data;
+                const target = event?.detail?.target;
                 return callback(
-                    'object' === typeof detail
-                        ? detail
+                    'object' === typeof data
+                        ? data
                         : null,
-                    event
+                    event,
+                    target
                 );
             });
         });
